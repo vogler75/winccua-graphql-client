@@ -18,6 +18,7 @@ CREATE TABLE ORDERS (
 
 ## Microsoft IIS Configuration
 You have to add a rule to your IIS configuration, to forward requests to your hasura instance.  
+In that example the Hasura server is running at the host 192.168.1.3 and listens on port 8089.  
 C:\Program Files\Siemens\Automation\WinCCUnified\SimaticUA\web.config
 ```
                 <rule name="hasura">
@@ -28,7 +29,6 @@ C:\Program Files\Siemens\Automation\WinCCUnified\SimaticUA\web.config
                     <action type="Rewrite" url="http://192.168.1.3:8089/v1/graphql" />
                 </rule>  
 ```
-In that example the Hasura server is running at the host 192.168.1.3 on listens on port 8089.  
 
 ## Hasura Docker 
 A docker-compose.yml example to start a Hasura instance.   
