@@ -1,0 +1,96 @@
+{
+	"mver": "1.2.0",
+	"control": {
+		"identity": {
+			"name": "GraphQL",
+			"version": "0.9",
+			"displayname": "GraphQL",
+			"icon": "./assets/logo.ico",
+			"type": "guid://D52DB1F6-58DC-449E-85A8-317C1A025951",
+			"start": "./control/index.html"
+		},
+		"metadata": {
+			"author": "Andreas Vogler",
+			"keywords": [
+				"GraphQL",
+				"GraphQL-Client"
+			]
+		},
+		"contracts": {
+			"api": {	
+				"methods": {
+					"Execute": {
+						"parameters": {
+							"args": {
+								"type": "object"
+							}
+						},
+						"description": "Execute GraphQL Query"
+					}
+				},			
+				"events": {
+					"Result": {
+						"arguments": {
+							"args": {
+								"type": "string"
+							}
+						},
+						"description": "Result JSON data from Query"
+					}
+				},
+				"properties": {
+					"Url": {
+						"type": "string",
+						"description": "URL to GraphQL Server",
+						"default": ""
+					},
+					"Endpoint": {
+						"type": "string",
+						"description": "GraphQL Endpoint",
+						"default": ""
+					},
+					"Token": {
+						"type": "string",
+						"description": "Optional Bearer Token",
+						"default": ""
+					},
+					"Query": {
+						"type": "string",
+						"description": "GraphQL Query",
+						"default": ""
+					},
+					"Id": {
+						"type": "string",
+						"description": "Optional Id",
+						"default": ""
+					},	
+					"Variables": {
+						"type": "string",
+						"description": "GraphQL Variables",
+						"default": "{}"
+					},
+					"Trigger": {
+						"type": "boolean",
+						"description": "Trigger Query",
+						"default": ""
+					},					
+					"Status": {
+						"type": "number",
+						"description": "Status",
+						"default": "0"
+					},
+					"Result": {
+						"type": "string",
+						"description": "Result",
+						"default": ""
+					},
+					"Error": {
+						"type": "string",
+						"description": "Error",
+						"default": ""
+					}
+				}
+			}
+		}
+	}
+}

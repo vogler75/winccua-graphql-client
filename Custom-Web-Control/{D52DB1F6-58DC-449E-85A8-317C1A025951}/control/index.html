@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+	<meta charset='utf-8'>
+	<title>GraphQL</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+
+	<link rel='stylesheet' href='./styles.css' />
+
+	<script src='./js/webcc.min.js'></script>
+
+</head>
+
+<body>
+    <div>
+      <h2>Status</h2>
+      <p id="StatusText"></p>
+    </div>
+    <div>
+      <h2>Result</h2>
+      <pre id="ResultText"></pre>
+    </div>
+    <div>
+      <h2>Error</h2>
+      <pre id="ErrorText"></pre>
+    </div>
+
+	<script>
+		function setResult(result) {
+			console.log("setResult: ", result);
+
+			WebCC.Properties["Trigger"] = false;
+
+			WebCC.Properties["Status"] = result.Status;
+			WebCC.Properties["Result"] = JSON.stringify(result.Result);
+			WebCC.Properties["Error"] = JSON.stringify(result.Error);
+
+			document.getElementById('StatusText').textContent =  result.Status;
+			document.getElementById('ResultText').textContent = JSON.stringify(result.Result);
+			document.getElementById('ErrorText').textContent = JSON.stringify(result.Error);
+
+			WebCC.Events.fire("Result", JSON.stringify(result));
+		}
+
+		function executeQuery(input) {
+
+			let data = JSON.stringify({
+				query: input.Query,
+				variables: (input.Variables ? input.Variables : {})
+			});
+
+
+			let options = {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Content-Length': data.length
+				},
+				body: data
+			};
+
+			if (input.Token && input.Token != "") {
+				options.headers.Authorization = "Bearer "+input.Token;
+			}			
+
+			url = (input.Url == "" ? window.location.origin : input.Url) + input.Endpoint;
+			console.log(url, options);
+
+			let output = {
+				Id: input.Id,
+				Status: 0,
+				Result: "",
+				Error: ""
+			}
+			fetch(url, options)
+				.then((response) => {
+					output.Status = response.status;
+					return response.json();
+				})
+				.then((json)=> {
+					output.Result = json;
+					setResult(output);
+				})
+				.catch((error) => {
+					output.Error = error;
+					setResult(output);
+				});									
+		}
+
+		function setProperty(data) {
+			console.log("setProperty: "+data.key+"="+data.value)	
+			switch (data.key) {
+				case 'Trigger':
+					if (data.value) {						
+						executeQuery({
+							Id: WebCC.Properties.Id,
+							Url: WebCC.Properties.Url,
+							Endpoint: WebCC.Properties.Endpoint,
+							Query: WebCC.Properties.Query,
+							Variables: JSON.parse(WebCC.Properties.Variables),
+							Token: WebCC.Properties.Token
+						});
+					}
+					break;		
+			}
+		}
+		
+		////////////////////////////////////////////
+		// Initialize the custom control
+		WebCC.start(
+			// callback function; occurs when the connection is done or failed. 
+			// "result" is a boolean defining if the connection was successfull or not.
+			function (result) {
+				if (result) {
+					console.log('Connected successfully.');
+						// Subscribe for value changes
+						WebCC.onPropertyChanged.subscribe(setProperty);
+				}
+				else {
+					console.log('Connection failed.');
+				}
+			},
+			// contract (see also manifest.json)
+			{
+				// Methods
+				methods: {
+					Execute: function (args) {
+						executeQuery({
+							Id: args.Id ? args.Id : WebCC.Properties.Id,
+							Url: args.Url ? args.Url : WebCC.Properties.Url,
+							Endpoint: args.Endpoint ? args.Endpoint : WebCC.Properties.Endpoint,
+							Query: args.Query ? args.Query : WebCC.Properties.Query,
+							Variables: args.Variables ? args.Variables : JSON.parse(WebCC.Properties.Variables),
+							Token: args.Token ? args.Token : WebCC.Properties.Token
+						});
+					}
+				},		
+				// Events
+				events: ['Result'],
+				// Properties
+				properties: {
+					Url: {},
+					Endpoint: {},
+					Token: {},
+					Query: {},
+					Id: {},
+					Variables: {},
+					Trigger: {},
+					Status: {},
+					Result: {},
+					Error: {}					
+				}
+			},
+			// placeholder to include additional Unified dependencies (not used in this example)
+			[],
+			// connection timeout
+			10000
+		);      
+	</script>
+
+</body>
+
+</html>
