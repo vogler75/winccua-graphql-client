@@ -1,4 +1,4 @@
-# GraphQL Client Custom Web Control for SIEMENS WinCC Unified
+# GraphQL Client for SIEMENS WinCC Unified
 
 It is a Custom Web Control to get access to GraphQL servers.
 
