@@ -39,6 +39,11 @@
 					}
 				},
 				"properties": {
+					"Id": {
+						"type": "string",
+						"description": "Optional Id",
+						"default": ""
+					},						
 					"Url": {
 						"type": "string",
 						"description": "URL to GraphQL Server",
@@ -59,16 +64,16 @@
 						"description": "GraphQL Query",
 						"default": ""
 					},
-					"Id": {
-						"type": "string",
-						"description": "Optional Id",
-						"default": ""
-					},	
 					"Variables": {
 						"type": "string",
 						"description": "GraphQL Variables",
 						"default": "{}"
 					},
+					"Content": {
+						"type": "string",
+						"description": "Content of Request",
+						"default": ""
+					},					
 					"Trigger": {
 						"type": "boolean",
 						"description": "Trigger Query",

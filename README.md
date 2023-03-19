@@ -2,9 +2,11 @@
 
 It is a Custom Web Control to get access to GraphQL servers.
 
-In the "GraphQL-Client-Demo" example [Hasura.io](https://hasura.io) is used to get access to a PostgreSQL database.
+In the "GraphQL-Client-Demo" example [Hasura.io](https://hasura.io) is used to get access to a PostgreSQL database.  
 
-See the example TIA V18 project.
+In the second screen we send questions to OpenAI ChatGPT and display the result. The Custom Web Control can also be used for REST API's with Content-Type: "application/json". Instead of setting the "Query" property you have to set your request body at the "Content" property. 
+
+See the example TIA V18 project.  
 
 ## PostgreSQL Table
 ``` 
@@ -55,4 +57,16 @@ services:
       ## uncomment next line to set an admin secret
       # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
 
+```
+
+## ChatGPT Demo
+You have to add a rule to your IIS configuration, to forward requests to OpenAI and you have to set your OpenAI API-Key into the input field in the screen. 
+```
+                <rule name="chatgpt">
+                    <match url="(.*)" />
+                    <conditions>
+                        <add input="{URL}" pattern="(.*)\/chatgpt\/(.*)" />
+                    </conditions>
+                    <action type="Rewrite" url="https://api.openai.com/v1/chat/completions" />
+                </rule>       
 ```
