@@ -2,6 +2,15 @@
 
 It is a Custom Web Control to get access to GraphQL servers.
 
+! You have to download the webcc.min.js from SIEMENS and save it to the control/js directory !  
+
+Create a Custom-Web.Control zip file from this directory:   
+> cd winccua-mqtt-client\Custom-Web-Control\{D52DB1F6-58DC-449E-85A8-317C1A025951}
+
+> "C:\Program Files\7-Zip\7z.exe" a -tzip "..\{D52DB1F6-58DC-449E-85A8-317C1A025951}.zip" *
+
+Copy the {D52DB1F6-58DC-449E-85A8-317C1A025951}.zip file to your project into the UserFiles\CustomControls directory.
+
 In the "GraphQL-Client-Demo" example [Hasura.io](https://hasura.io) is used to get access to a PostgreSQL database.  
 
 In the second screen we send questions to OpenAI ChatGPT and display the result. The Custom Web Control can also be used for REST API's with Content-Type: "application/json". Instead of setting the "Query" property you have to set your request body at the "Content" property. 
